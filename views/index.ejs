@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Prompt Playground</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <h1>🧪 Interactive Prompt Playground</h1>
+  
+  <form action="/generate" method="POST">
+    <div class="form-group">
+      <label for="model">Model</label>
+      <select name="model" id="model">
+        <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+        <option value="gpt-4">GPT-4</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="systemPrompt">System Prompt</label>
+      <input type="text" id="systemPrompt" name="systemPrompt" value="You are a professional marketing copywriter." />
+    </div>
+
+    <div class="form-group">
+      <label for="userPrompt">User Prompt</label>
+      <input type="text" id="userPrompt" name="userPrompt" placeholder="Write a product description for the iPhone 15." />
+    </div>
+
+    <div class="form-group">
+      <label for="temperature">Temperature</label>
+      <input type="number" id="temperature" name="temperature" step="0.1" value="0.7" min="0" max="2" />
+      <small>Controls randomness: 0 = focused, 2 = creative</small>
+    </div>
+
+    <div class="form-group">
+      <label for="max_tokens">Max Tokens</label>
+      <input type="number" id="max_tokens" name="max_tokens" value="150" min="1" max="4000" />
+      <small>Maximum length of the response</small>
+    </div>
+
+    <div class="form-group">
+      <label for="presence_penalty">Presence Penalty</label>
+      <input type="number" id="presence_penalty" step="0.1" name="presence_penalty" value="0.0" min="-2" max="2" />
+      <small>Controls topic diversity</small>
+    </div>
+
+    <div class="form-group">
+      <label for="frequency_penalty">Frequency Penalty</label>
+      <input type="number" id="frequency_penalty" step="0.1" name="frequency_penalty" value="0.0" min="-2" max="2" />
+      <small>Controls repetition</small>
+    </div>
+
+    <button type="submit">Generate Response</button>
+  </form>
+
+  <hr/>
+  
+  <% if (outputs && outputs.length > 0) { %>
+    <h2>Generated Responses</h2>
+    <% outputs.forEach(out => { %>
+      <div class="output">
+        <div class="output-header">
+          <span><strong>Model:</strong> <%= out.model %></span>
+          <span><strong>Temperature:</strong> <%= out.temperature %></span>
+          <span><strong>Max Tokens:</strong> <%= out.max_tokens %></span>
+        </div>
+        <div class="output-params">
+          <span><strong>Presence Penalty:</strong> <%= out.presence_penalty %></span>
+          <span><strong>Frequency Penalty:</strong> <%= out.frequency_penalty %></span>
+        </div>
+        <pre><%= out.output %></pre>
+      </div>
+    <% }) %>
+  <% } %>
+</body>
+</html>
